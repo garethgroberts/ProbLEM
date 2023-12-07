@@ -13,12 +13,14 @@ z^{x}_{t+1} =
 		z^{x}_{t} -\delta_z	& \text{if} \quad F > c^*
 	\end{cases}
 ```
-where $\delta_z$ is erosion (units of length), $F$ is a driving force, parameterised in the code as an Ornstein-Uhlenbeck process, and $c^*$ is a critical threshold (force) that must be exceeded for erosion to occur.  The following schematic is from Roberts and Wani (TBC). The $`t`$ and $`x`$ indicate time and space indicies, respectively. 
+where $`t`$ and $`x`$ indicate time and space indicies, respectively. $\delta_z$ is erosion (units of length), $F$ is a (stochastic) driving force, parameterised in the code as an Ornstein-Uhlenbeck process, and $c^*$ is a critical threshold (force) that must be exceeded for erosion to occur. Here it is assumed to be constant, but it could easily be modified to be stochastic.  The following schematic is from Roberts and Wani (TBC). 
 
 <p align="center">
 <img src="https://github.com/garethgroberts/ProbLEM/assets/11752321/bc55b160-3a1e-4cf4-8cfd-0f8adc5b1a69" width="650" height="300" />
 </p>
 
+<br/>
+<br/>
 <br/>
 
 The following figure shows output from the algorithm, it is Figure 11 in Roberts & Wani (TBC). It is a demonstration of local erosional complexity and emergent simplicity for an evolving theoretical river profile subject to stochastic forcing. 
@@ -27,6 +29,11 @@ The following figure shows output from the algorithm, it is Figure 11 in Roberts
 
 (a-b) Examples of inserted forces (grey), associated expected values and variance (solid and dashed), critical threshold (red), and resultant analytical probabilities of erosion (thick black; see Figure 10a-b for extended explanation). (c) Example of profile evolution in one simulation. Grey and black curves = profiles every 50 and 200 time steps, respectively. (d) Zoom into panel c. Black outlined bars = river profile at time step 600. (e) Zoom into a separate simulation that has different random driving forces (but same distribution). Black outlined bars = time step 600. Note differences between evolution and resultant profiles in panels d and e. (f) ‘Fuzzy’ black curves = profiles at 200, 400, 600 and 800 time steps (e.g. black curves in panel c) from 10 simulations with different random driving forces (but same distribution). Straight line = starting condition. Circles = expected displacements of erosional front originating at the mouth of the ‘river’ at (1000, 0); colors = time steps (see panel c for scale); calculated variance is smaller than symbol size. Small grey square centred at (190, 250) = position of zoomed-in region shown in panels d, e and g. (g) Calculated positions of longitudinal profiles at time step 600 for the 10 simulations shown in panel f. Colors and line widths simply indicate profiles from different simulations for clarity. Note their variability.
 
+<br/>
+Note that analytical calculations of expected displacement values and variance are plotted in panel (f), see Roberts and Wani (TBC) for details. 
+<br/>
+<br/>
+<br/>
 ---
 
 To run a single simulation of the stochastic model use:
