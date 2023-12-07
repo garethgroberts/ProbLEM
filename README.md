@@ -6,7 +6,7 @@ It was used to generate Figure 11 (below with caption) in Roberts and Wani (Date
 
 The ProbLEM algorithm is super simple, most of the effort is in the plotting of results! 
 
-[rivevo_ou_staged.pdf](https://github.com/garethgroberts/ProbLEM/files/13598650/rivevo_ou_staged.pdf)
+![alt_text](https://github.com/garethgroberts/ProbLEM/files/13598650/rivevo_ou_staged.pdf)
 
 Demonstration of local erosional complexity and emergent simplicity for an evolving theoretical river profile subject to stochastic forcing. (a-b) Examples of inserted forces (grey), associated expected values and variance (solid and dashed), critical threshold (red), and resultant analytical probabilities of erosion
 (thick black; see Figure 10a-b for extended explanation). (c) Example of profile evolution in one simulation. Grey and black curves = profiles every 50 and 200 time steps, respectively. (d) Zoom into panel c. Black outlined bars = river profile
@@ -17,17 +17,19 @@ panels d, e and g. (g) Calculated positions of longitudinal profiles at time ste
 
 To run a single simulation of the stochastic model use:
 
-> python ProbLEM_force_OU_evo.py
+> python ProbLEM_force_OU_evo_single_fig.py
 
-A shell script (bash) is provided for running simulations, to run:
+A shell script (bash) is provided for running multiple simulations, which calls the python script referred to above, to run:
 
 > ./loop.sh
 
-it deposits output in directories called run_*.
+it deposits output in directories called run_*. Examples used to create Figure 11 are included in the directories named run_*.
 
-There are matplotlib (python) plotting scripts included in ProbLEM_force_OU_evo.py, but I find gmt offers a bit more flexibility and hence Figure 11 in the manuscript was produced by running:
+There are matplotlib (python) plotting scripts included in ProbLEM_force_OU_evo_single_fig.py, but I find gmt offers a bit more flexibility and hence Figure 11 in the manuscript was produced by running:
 
 > ./plot_results.gmt
+
+also included in this directory are various gmt colour palette files used for plotting, note that these are generated within the plot_results.gmt script. 
 
 The individual scripts have comments to explain variables and values used. Do feel free to get in touch if anything isn't clear. 
 
