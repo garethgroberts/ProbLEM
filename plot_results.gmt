@@ -1,0 +1,205 @@
+#!/bin/bash
+gmt gmtset PS_MEDIA = a2
+gmt gmtset LABEL_FONT = 18p
+gmt gmtset FONT_ANNOT_PRIMARY             = 16p,Helvetica,black
+gmt gmtset FONT_ANNOT_SECONDARY           = 16p,Helvetica,black
+
+
+rgn=-R0/1005/0/1005
+rgnz=-R240/280/230/270
+
+
+rgnf=-R-5/1005/1.5/4
+scl=-JX4i/1.9i 
+
+indir=run_1
+gmt psbasemap $rgnf $scl -Ba200f100:"Distance, [L]":/a2f1:"Force & Threshold":Wen -K -P -Y12i > rivevo_ou_staged.ps
+awk '{print $1, $2}' < $indir/xforce.csv | gmt psxy $rgnf $scl -Ba0 -W0.05i,red -O -K >> rivevo_ou_staged.ps   #erosional threshold
+
+list=`awk '{print $1}' < $indir/txforce.csv | uniq | tr '\n' '\t'`                        #forces
+for i in $list; do
+#echo "plotting time:" $i
+awk -v var=$i '{if ($1==var) print $2, $3, var}' < $indir/txforce.csv | gmt psxy $rgn $scl -Ba0 -W0.01i,darkgray -O -K >> rivevo_ou_staged.ps
+done
+
+list2=`seq 1 10 | tr '\n' '\t'`
+for j in $list2; do 
+awk '{print $1, $6}' < run_$j/xforce.csv | gmt psxy $rgnf $scl -Ba0 -W0.01i,grey -O -K >> rivevo_ou_staged.ps
+done
+
+awk '{print $1, $3}' < $indir/xforce.csv | gmt psxy $rgnf $scl -Ba0 -W0.02i -O -K >> rivevo_ou_staged.ps               #expected values and var
+awk '{print $1, $4}' < $indir/xforce.csv | gmt psxy $rgnf $scl -Ba0 -W0.02i,- -O -K >> rivevo_ou_staged.ps
+awk '{print $1, $5}' < $indir/xforce.csv | gmt psxy $rgnf $scl -Ba0 -W0.02i,- -O -K >> rivevo_ou_staged.ps
+echo "a" | gmt pstext $rgn $scl -Ba0 -F+f28p,+cBR -D-0.1i/0.1i -K -O >> rivevo_ou_staged.ps
+echo "Head"  | gmt pstext $rgn $scl -Ba0 -F+f18p,+cTL -D0.1i/-0.1i -K -O >> rivevo_ou_staged.ps
+echo "Mouth" | gmt pstext $rgn $scl -Ba0 -F+f18p,+cTR -D-0.1i/-0.1i -K -O >> rivevo_ou_staged.ps
+
+####
+
+rgnp=-R-5/1005/0/1.05    #probability of erosion
+scl=-JX4i/1.9i 
+gmt psbasemap $rgnp $scl -Ba200f100:"Distance, [L]":/a1f0.2:"P. erosion":WS -K -O -Y-2.1i >> rivevo_ou_staged.ps
+awk '{print $1, $2}' < $indir/xprob.csv | gmt psxy $rgnp $scl -Ba0 -W0.05i -O -K >> rivevo_ou_staged.ps
+echo "b" | gmt pstext $rgnp $scl -Ba0 -F+f28p,+cBR -D-0.1i/0.1i -O -K >> rivevo_ou_staged.ps
+
+
+
+####
+
+scl=-JX4i/4i
+gmt makecpt -T0/1000/10 -Z -Chot > time.cpt
+
+# plot temporal evolution of entire profile
+indir=./run_1
+
+gmt psbasemap $rgn $scl -Ba200f100:"Distance, [L]":/a200f100:"Elevation, [L]":WeS -K -X5.1i -O >> rivevo_ou_staged.ps
+
+awk '{print $2, $3, $1}' < $indir/ssol.csv | gmt psxy $rgn $scl -Ba0 -Sb1q -Ctime.cpt -O -K >> rivevo_ou_staged.ps
+awk '{print $2, $3, $1}' < $indir/ssol.csv | gmt psxy $rgn $scl -Ba0 -W0.01i -O -K >> rivevo_ou_staged.ps
+
+list=`awk '{print $1}' < $indir/rivevo.csv | uniq | tr '\n' '\t'`
+#list='600'
+for i in $list; do
+# echo "plotting time:" $i
+awk -v var=$i '{if ($1==var) print $2, $3, var}' < $indir/rivevo.csv | gmt psxy $rgn $scl -Ba0 -Sb1q -Ctime.cpt -O -K >> rivevo_ou_staged.ps
+done
+
+list=`awk '{print $1}' < $indir/rivevo.csv | uniq | tr '\n' '\t' | awk 'NR%100==1'`
+#list='600'
+for i in $list; do
+# echo "plotting time:" $i
+awk -v var=$i '{if ($1==var) print $2, $3, var}' < $indir/rivevo.csv | gmt psxy $rgn $scl -Ba0 -W0.01i,grey -Ax -Ctime.cpt -O -K >> rivevo_ou_staged.ps
+done
+
+list='200 400 600 800'
+for i in $list; do
+# echo "plotting time:" $i
+awk -v var=$i '{if ($1==var) print $2, $3, var}' < $indir/rivevo.csv | gmt psxy $rgn $scl -Ba0 -W0.01i -Ax -O -K >> rivevo_ou_staged.ps
+done
+
+echo "c" | gmt pstext $rgn $scl -Ba0 -F+f28p,+cTR -D-0.1i/-0.1i -K -O >> rivevo_ou_staged.ps
+gmt psscale -D2.8i/3.2i/1.5i/0.15ih -A -Ctime.cpt -Ba500f100:"Time, [T]": $rgn $scl -O -K  >> rivevo_ou_staged.ps
+ 
+
+#####
+gmt makecpt -T590/610/1 -Chot > time.cpt
+
+# plot temporal evolution of zoom
+gmt psbasemap $rgnz $scl -Ba10f5:"Distance, [L]":/a10f5:"":WeS -K -O -X5.1i >> rivevo_ou_staged.ps
+
+awk '{print $2, $3, $1}' < $indir/ssol.csv | gmt psxy $rgnz $scl -Ba0 -W0.01i -O -K >> rivevo_ou_staged.ps
+
+list=`awk '{print $1}' < $indir/rivevo_early.csv | uniq | tr '\n' '\t'`
+#list='600'
+for i in $list; do
+echo "plotting time:" $i
+awk -v var=$i '{if ($1==var) print $2, $3, var}' < $indir/rivevo_early.csv | gmt psxy $rgnz $scl -Ba0 -Sb1q -Ctime.cpt -O -K >> rivevo_ou_staged.ps
+done
+
+#awk -v var=600 '{if ($1==var) print $2, $3, var}' < $indir/rivevo_early.csv | gmt psxy $rgnz $scl -Ba0 -Ax  -W0.015i -O -K >> rivevo_ou_staged.ps
+awk -v var=600 '{if ($1==var) print $2, $3, var}' < $indir/rivevo_early.csv | gmt psxy $rgnz $scl -Ba0 -Sb1q  -W0.015i -O -K >> rivevo_ou_staged.ps
+
+echo "d" | gmt pstext $rgnz $scl -Ba0 -F+f28p,+cTR -D-0.1i/-0.1i -O -K >> rivevo_ou_staged.ps
+
+gmt psscale -D2.8i/3.2i/1.5i/0.15ih -A -Ctime.cpt -Ba10f5:"Time, [T]": $rgnz $scl -O -K >> rivevo_ou_staged.ps
+
+
+
+#####
+indir=run_2
+gmt makecpt -T590/610/1 -Chot > time.cpt
+
+# plot temporal evolution of zoom
+gmt psbasemap $rgnz $scl -Ba10f5:"Distance, [L]":/a10f5:"Elevation, [L]":WeS -K -O -X-10.2i -Y-5i >> rivevo_ou_staged.ps
+
+awk '{print $2, $3, $1}' < $indir/ssol.csv | gmt psxy $rgnz $scl -Ba0 -W0.01i -O -K >> rivevo_ou_staged.ps
+
+list=`awk '{print $1}' < $indir/rivevo_early.csv | uniq | tr '\n' '\t'`
+#list='600'
+for i in $list; do
+echo "plotting time:" $i
+awk -v var=$i '{if ($1==var) print $2, $3, var}' < $indir/rivevo_early.csv | gmt psxy $rgnz $scl -Ba0 -Sb1q -Ctime.cpt -O -K >> rivevo_ou_staged.ps
+done
+
+
+#awk -v var=600 '{if ($1==var) print $2, $3, var}' < $indir/rivevo_early.csv | gmt psxy $rgnz $scl -Ba0 -Ax -W0.015i -O -K >> rivevo_ou_staged.ps
+awk -v var=600 '{if ($1==var) print $2, $3, var}' < $indir/rivevo_early.csv | gmt psxy $rgnz $scl -Ba0 -Sb1q -W0.015i -O -K >> rivevo_ou_staged.ps
+
+echo "e" | gmt pstext $rgnz $scl -Ba0 -F+f28p,+cTR -D-0.1i/-0.1i -O -K >> rivevo_ou_staged.ps
+
+gmt psscale -D2.8i/3.2i/1.5i/0.15ih -A -Ctime.cpt -Ba10f5:"Time, [T]": $rgnz $scl -O -K >> rivevo_ou_staged.ps
+
+
+
+
+
+
+
+
+
+####
+gmt makecpt -T0/1000/10 -Z -Chot > time.cpt
+
+# plot temporal evolution of entire profile
+rgn=-R0/1005/0/1005
+gmt psbasemap $rgn $scl -Ba200f100:"Distance, [L]":/a200f100:"":WeS -K -O -X5.1i >> rivevo_ou_staged.ps
+
+awk '{print $2, $3, $1}' < run_1/ssol.csv | gmt psxy $rgn $scl -Ba0 -W0.01i -O -K >> rivevo_ou_staged.ps
+	
+gmt psxy $rgn $scl -Ba0 -L -Ggrey -K -O <<END>> rivevo_ou_staged.ps
+240 230
+280 230
+280 270
+240 270
+240 230
+END
+	
+list2=`seq 1 10 | tr '\n' '\t'`
+for j in $list2; do 
+	indir=run_$j
+	awk -v var=200 '{if ($1==var) print $2, $3, var}' < $indir/rivevo.csv | gmt psxy $rgn $scl -Ba0 -W0.01i -Ax -O -K >> rivevo_ou_staged.ps
+	
+	awk -v var=400 '{if ($1==var) print $2, $3, var}' < $indir/rivevo.csv | gmt psxy $rgn $scl -Ba0 -W0.01i -Ax -O -K >> rivevo_ou_staged.ps
+	
+	awk -v var=600 '{if ($1==var) print $2, $3, var}' < $indir/rivevo.csv | gmt psxy $rgn $scl -Ba0 -W0.01i -Ax -O -K >> rivevo_ou_staged.ps
+		
+	awk -v var=800 '{if ($1==var) print $2, $3, var}' < $indir/rivevo.csv | gmt psxy $rgn $scl -Ba0 -W0.01i -Ax -O -K >> rivevo_ou_staged.ps
+done
+
+#awk '{print $2, "0.", $3, $1}' < run_1/txexpd.csv | gmt psxy $rgn $scl -N -Ba0 -S0.1i -Ctime.cpt -Ex -W0.03i -O -K >> rivevo_ou_staged.ps
+
+echo "f" | gmt pstext $rgn $scl -Ba0 -F+f28p,+cTR -D-0.1i/-0.1i -K -O >> rivevo_ou_staged.ps
+
+
+
+#awk '{if ($1>699 && $1<701) print 1000-$2, "0.", $1, ($3)**0.5}' < run_1/txexpd.csv | gmt psxy $rgn $scl -N -Ba0 -Sc0.2i -W0.01i -Ex -Ctime.cpt -O -K >> rivevo_ou_staged.ps
+awk '{if ($1>199 && $1<201) print 1000-$2, "0.", $1}' < run_1/txexpd.csv > temp
+awk '{if ($1>399 && $1<401) print 1000-$2, "0.", $1}' < run_1/txexpd.csv >> temp
+awk '{if ($1>599 && $1<601) print 1000-$2, "0.", $1}' < run_1/txexpd.csv >> temp
+awk '{if ($1>799 && $1<801) print 1000-$2, "0.", $1}' < run_1/txexpd.csv >> temp
+gmt psxy temp $rgn $scl -N -Ba0 -Sc0.2i -W0.01i -Ctime.cpt -O -K >> rivevo_ou_staged.ps
+
+
+#####
+gmt makecpt -T690/710/1 -Chot > time.cpt
+gmt psbasemap $rgnz $scl -Ba10f5:"Distance, [L]":/a10f5:"":WeS -K -O -X5.1i >> rivevo_ou_staged.ps
+
+awk '{print $2, $3, $1}' < $indir/ssol.csv | gmt psxy $rgnz $scl -Ba0 -W0.01i -O -K >> rivevo_ou_staged.ps
+
+list2=`seq 10 1 | tr '\n' '\t'`
+for j in $list2; do 
+	indir=run_$j
+	color=$(bc <<< "scale=2;$j*20")
+	width=$(bc <<< "scale=2;$j/100")
+ 	awk -v var=600 -v var2=$j '{if ($1==var) print $2, $3}' < $indir/rivevo_early.csv | gmt psxy $rgnz $scl -Ba0 -Ax -W${width}i,$color -O -K >> rivevo_ou_staged.ps
+done
+
+echo "g" | gmt pstext $rgnz $scl -Ba0 -F+f28p,+cTR -D-0.1i/-0.1i -O >> rivevo_ou_staged.ps
+
+#gmt psscale -D3i/3.2i/1.5i/0.15ih -A -Ctime.cpt -Ba10f5:"Time, [T]": $rgnz $scl -O >> rivevo_ou_staged.ps
+
+
+gmt psconvert rivevo_ou_staged.ps -Tf -A
+open rivevo_ou_staged.pdf
+exit
+
