@@ -35,7 +35,7 @@ Also included in this directory are various gmt colour palette files used for pl
 
 The individual scripts have comments to explain variables and values used. Do feel free to get in touch if anything isn't clear. 
 
-Scripts were genereate and run on mac (unix core). 
+Scripts were genereated and run on mac osx (13.5.2), python = python3.11.6, gmt = gmt6.4.0.  
 
 Gareth Roberts, Dec 2023. 
 (https://www.garethgroberts.com/home)https://www.garethgroberts.com/home
