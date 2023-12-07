@@ -44,7 +44,7 @@ A shell script (bash) is provided for running multiple simulations, which calls 
 
 > ./loop.sh
 
-it deposits output in directories called run_*. Examples used to create Figure 11 are included in the directories named run_*.
+It deposits output in directories called run_\*. Examples used to create Figure 11 are included in the directories named run_\*.
 
 There are matplotlib (python) plotting scripts included in ProbLEM_force_OU_evo_single_fig.py, but I find gmt (https://docs.generic-mapping-tools.org/6.4/index.html) offers a bit more flexibility and hence Figure 11 was produced by running:
 
