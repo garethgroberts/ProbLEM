@@ -13,7 +13,7 @@ z^{x}_{t+1} =
 		z^{x}_{t} -\delta_z	& \text{if} \quad F > c^*
 	\end{cases}
 ```
-where $`t`$ and $`x`$ indicate time and space indicies, respectively. $\delta_z$ is erosion (units of length), $F$ is a (stochastic) driving force, parameterised in the code as an Ornstein-Uhlenbeck process, and $c^*$ is a critical threshold (force) that must be exceeded for erosion to occur. Here it is assumed to be constant, but it could easily be modified to be stochastic.  The following schematic is from Roberts and Wani (TBC). 
+where $`t`$ and $`x`$ indicate time and space indicies, respectively. $\delta_z$ is erosion (units of length), $F$ is a (stochastic) driving force, parameterised in the code as an Ornstein-Uhlenbeck process, and $c^*$ is a critical threshold (force) that must be exceeded for erosion to occur. Here it is assumed to be constant, but it could easily be modified to be stochastic.  The following schematic used to explain the approach is from Roberts and Wani (TBC). 
 
 <p align="center">
 <img src="https://github.com/garethgroberts/ProbLEM/assets/11752321/bc55b160-3a1e-4cf4-8cfd-0f8adc5b1a69" width="650" height="300" />
