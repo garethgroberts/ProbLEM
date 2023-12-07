@@ -27,13 +27,15 @@ A shell script (bash) is provided for running multiple simulations, which calls 
 
 it deposits output in directories called run_*. Examples used to create Figure 11 are included in the directories named run_*.
 
-There are matplotlib (python) plotting scripts included in ProbLEM_force_OU_evo_single_fig.py, but I find gmt offers a bit more flexibility and hence Figure 11 in the manuscript was produced by running:
+There are matplotlib (python) plotting scripts included in ProbLEM_force_OU_evo_single_fig.py, but I find gmt (https://docs.generic-mapping-tools.org/6.4/index.html) offers a bit more flexibility and hence Figure 11 was produced by running:
 
 > ./plot_results.gmt
 
-also included in this directory are various gmt colour palette files used for plotting, note that these are generated within the plot_results.gmt script. 
+Also included in this directory are various gmt colour palette files used for plotting, note that these are generated within the plot_results.gmt script. 
 
 The individual scripts have comments to explain variables and values used. Do feel free to get in touch if anything isn't clear. 
+
+Scripts were genereate and run on mac (unix core). 
 
 Gareth Roberts, Dec 2023. 
 (https://www.garethgroberts.com/home)https://www.garethgroberts.com/home
