@@ -4,7 +4,7 @@ This directory contains a forward model for evolving longitudinal river profiles
 
 It was used to generate Figure 11 (below with caption) in the paper Roberts and Wani (Date TBC), A theory of stochastic fluvial landscape evolution, preprint link: https://eartharxiv.org/repository/view/5578/. 
 
-The ProbLEM algorithm is simple, most of the effort is in the plotting of results! The code evolves a longitudinal river profile (elevation as a function of distance, $`z(x)`$) via the simple scheme:
+The ProbLEM algorithm is simple, most of the effort is in the plotting of results. The code evolves a longitudinal river profile (elevation as a function of distance, $`z(x)`$) via the simple scheme:
 
 ```math
 z^{x}_{t+1} = 
